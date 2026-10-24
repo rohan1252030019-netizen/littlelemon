@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtualenvs / pipenv
+.venv/
+venv/
+.env
+Pipfile.lock.bak
+
+# Django
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
