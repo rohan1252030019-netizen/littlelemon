@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Menu &mdash; Little Lemon{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <p class="eyebrow">Our kitchen</p>
+    <h1>The Little Lemon menu</h1>
+    <p class="lead">
+      Every dish below is served straight from the database &mdash; this page is
+      rendered by Django and reads its data through the same models the API uses.
+    </p>
+  </div>
+</section>
+
+<section class="container section">
+  {% if menu_items %}
+    {% regroup menu_items by get_category_display as category_list %}
+    {% for category in category_list %}
+      <div class="menu-group">
+        <h2>{{ category.grouper }}</h2>
+        <table class="menu-table">
+          <thead>
+            <tr>
+              <th scope="col">Dish</th>
+              <th scope="col">Description</th>
+              <th scope="col">Price</th>
+              <th scope="col">Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in category.list %}
+              <tr>
+                <td class="dish-name">{{ item.title }}</td>
+                <td>{{ item.description|default:"&mdash;" }}</td>
+                <td class="price">${{ item.price }}</td>
+                <td>
+                  {% if item.inventory > 0 %}
+                    <span class="stock">In stock ({{ item.inventory }})</span>
+                  {% else %}
+                    <span class="stock out">Sold out</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="empty">
+      The menu is empty. Run <code>python manage.py seed_menu</code> to load the
+      Little Lemon dishes, or add them in the <a href="/admin/">admin</a>.
+    </p>
+  {% endif %}
+</section>
+{% endblock %}

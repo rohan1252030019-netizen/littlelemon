@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 django = "<6,>=5.2"
 mysqlclient = "*"
+djangorestframework = "*"
+django-filter = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

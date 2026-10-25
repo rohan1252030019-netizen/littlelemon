@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Little Lemon &mdash; Mediterranean Restaurant{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">Chicago &middot; Since 1995</p>
+      <h1>Mediterranean food,<br>cooked with lemon and love.</h1>
+      <p class="lead">
+        A family-run restaurant serving fresh, seasonal dishes. Browse the menu,
+        create an account, and reserve your table &mdash; all through our API.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{% url 'menu-page' %}">View the menu</a>
+        <a class="btn btn-ghost" href="/api/">Explore the API</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h2>On the menu today</h2>
+      {% if menu_count %}
+        <p class="hero-stat">{{ menu_count }} dishes &amp; drinks</p>
+      {% else %}
+        <p class="hero-stat">The menu is being prepared</p>
+      {% endif %}
+      <ul class="hero-list">
+        <li>Greek salad</li>
+        <li>Bruschetta</li>
+        <li>Grilled fish</li>
+        <li>Lemon dessert</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-heading">
+    <h2>Featured dishes</h2>
+    <a href="{% url 'menu-page' %}">See full menu &rarr;</a>
+  </div>
+
+  {% if featured_items %}
+    <div class="card-grid">
+      {% for item in featured_items %}
+        <article class="dish-card">
+          <span class="tag">{{ item.get_category_display }}</span>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description|default:"A Little Lemon classic." }}</p>
+          <div class="dish-footer">
+            <span class="price">${{ item.price }}</span>
+            {% if item.inventory > 0 %}
+              <span class="stock">Available</span>
+            {% else %}
+              <span class="stock out">Sold out</span>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty">
+      No featured dishes yet. Run <code>python manage.py seed_menu</code> or add
+      items in the <a href="/admin/">admin</a>.
+    </p>
+  {% endif %}
+</section>
+
+<section class="container section">
+  <div class="section-heading">
+    <h2>Restaurant API</h2>
+    <a href="/api/">Open the browsable API &rarr;</a>
+  </div>
+  <div class="endpoint-grid">
+    <div class="endpoint">
+      <code>GET /api/menu/</code>
+      <p>Public menu with search, filtering and ordering.</p>
+    </div>
+    <div class="endpoint">
+      <code>POST /api/menu/</code>
+      <p>Managers add dishes. Token authentication required.</p>
+    </div>
+    <div class="endpoint">
+      <code>GET /api/bookings/</code>
+      <p>Your reservations. Managers see every booking.</p>
+    </div>
+    <div class="endpoint">
+      <code>POST /api/registration/</code>
+      <p>Create an account and receive an auth token.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

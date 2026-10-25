@@ -1,0 +1,24 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: littlelemon-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: littlelemon
+      MYSQL_USER: lemon
+      MYSQL_PASSWORD: lemonpass
+    ports:
+      # 3307 on the host avoids clashing with a MySQL server already on 3306.
+      - "3307:3306"
+    volumes:
+      - littlelemon_mysql:/var/lib/mysql
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  littlelemon_mysql:

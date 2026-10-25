@@ -1,20 +1,20 @@
+# Environment
+.env
+.env.*
+!.env.example
+
 # Python
 __pycache__/
 *.py[cod]
 *.egg-info/
-.pytest_cache/
-
-# Virtualenvs / pipenv
 .venv/
 venv/
-.env
-Pipfile.lock.bak
+env/
 
 # Django
-*.log
 db.sqlite3
-media/
 staticfiles/
+*.log
 
 # Editors / OS
 .vscode/
